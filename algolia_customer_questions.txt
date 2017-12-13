@@ -1,0 +1,43 @@
+Question 1: 
+Hello,
+I'm new to search engines, and there are a lot of concepts I'm not educated on. To make my onboarding smoother, it'd help if you could provide me with some definitions of the following concepts:
+	•	Records 
+	•	Indexing 
+I'm also struggling with understanding what types of metrics would be useful to include in the "Custom Ranking."
+Cheers, George
+
+Hi George,
+Happy to answer your questions! Both “Records” and “Indexing” have to do with the process of organizing your data in Algolia so you can find the information you need when you perform a search. “Records” refers to the data that you are looking to search with Algolia. This data could be from an existing database you have, a spreadsheet, or even from an API.  “Indexing” refers to the process of sending your data to Algolia and adding the appropriate rules and filters to your data so it can be easily searched. To send your data to Algolia, you can use the web dashboard or the Algolia API, your data just needs to be in JSON format. Once your data has been indexed, you can use the API or dashboard to add the appropriate rankings, rules, or logic to your search. Here’s a link to an overview on “Indexing” from our documentation that provides some more context to how to get setup with Algolia: 
+https://www.algolia.com/doc/guides/indexing/indexing-overview/#overview
+
+As for “Custom Rankings,”, you can think of that as the way to customize your search results beyond the search rankings and logic. This might be the case if two search results had an equal ranking and you needed a tie-breaking metric. This can also be useful if you wanted to add weighted relevance to certain information, but you don’t want it to be permanent.   An example of this is if you had an online store that had a product search, you might want to promote new or special items to a search query even if the search query itself wouldn’t prioritize them through your rankings.
+
+I hope that helps.  Let me know if you have any other questions!
+
+Cheers,
+Nic
+
+Question 2: Hello,
+Sorry to give you the kind of feedback that I know you do not want to hear, but I really hate the new dashboard design. Clearing and deleting indecies are now several clicks away. I am needing to use these features while iterating, so this is inconvenient.
+Regards, Matt
+
+Hi Matt,
+No worries at all, we really appreciate the candid feedback. Obviously we’re sorry you don’t like the new design, but hopefully we can find a better workflow for your use-case or if not, at least get your feedback to the product team.
+To start, can you tell me the exact steps you’re taking on the dashboard to clear/delete your indexes? Once you select your “Indices” on the dashboard, you should be able to use the “Manage Current Index” button in the upper right-hand corner to both delete or clear that index:
+https://nichansen.box.com/s/y2n9tx25n2xuakw84guufkl0zwiohc7a
+
+Let me know if there’s a specific step in that flow that you find tedious or ideally, how you would like this to work.You can also manage your indices from the API, so if your use-case includes a lot of manual management, we may be able to come up with a more efficient solution though the API. 
+Cheers,
+Nic
+
+Question 3: Hi,
+I'm looking to integrate Algolia in my website. Will this be a lot of development work for me? What's the high level process look like?
+Regards, Leo
+
+Hi Leo! Thanks for reaching out. For any dev who has thought about doing their own search indexing, Algolia will make your life a lot easier and save you tons of development work. The specific time it would take to implement really depends on the scope of the search and UI you’re trying to build out. Because Algolia is cloud-based and has tons of great tools and templates for getting started, you could implement a simple solution in less than 10 minutes. All you have to do is send your data to Algolia in JSON, define any rules and rankings you want for your search, and then build out the UI for your front end. Indexing your data and defining your rankings can be done through the web dashboard or our API. For the UI, we have a bunch of templates and SDK’s you can leverage.  If you have a single UI on a web page with simple data, this can be done very quickly. If you have multiple datasets and multiple UI’s you need to build for different platforms (web, Android, iOS etc.) then that can take up to weeks in development time, but it all depends on your needs. 
+
+Tell me a little bit more about your needs and I can give you a better idea of what it would take to get that up and running. 
+
+Cheers,
+Nic
+

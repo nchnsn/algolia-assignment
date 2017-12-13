@@ -211,7 +211,6 @@ input::placeholder {
 
 .main-wrapper{
   min-height: 800px;
-  overflow:-webkit-paged-y;
   margin:25px;
   background-color:#fff;
   border-radius:10px;

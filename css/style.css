@@ -241,11 +241,11 @@ input::placeholder {
    padding: 25px;
    margin: 0;
    list-style: none;
-   border:1px solid seagreen;
+   
  }
 
   .main-wrapper{
-    overflow:-webkit-paged-y;
+    overflow:auto;
     background-color:#fff;
     border-radius:0px;
     margin:0; 

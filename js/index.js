@@ -5,14 +5,18 @@
 
 
 var algolia = algoliasearch('P66KPV0B4D', 'd21f68656aa0b122171c8138b26379a5');
+// defining the intial number of results and adding a method to 'show more'
+var hitNumber = 5;
 
 // Algolia Helper
 var helper = algoliasearchHelper(algolia, 'restaurant_data', {
   // Facets need to be explicitly defined here
   facets: ['food_type', 'stars_count', 'payment_options'],
+  
+  
   // Misc. configuration for the demo purpose 
-  hitsPerPage: 5,
-  maxValuesPerFacet: 5
+  hitsPerPage: hitNumber,
+  maxValuesPerFacet: 4
 });
 
 // Bind the result event to a function that will update the results
@@ -54,6 +58,7 @@ function searchCallback(results) {
 function renderHits($hits, results) {
   // Scan all hits and display them
   var hits = results.hits.map(function renderHit(hit, index) {
+    console.log(hit);
     // We rely on the highlighted attributes to know which attribute to display
     // This way our end-user will know where the results come from
     // This is configured in our index settings
@@ -90,25 +95,24 @@ function renderHits($hits, results) {
 
     // }).join('');
     return (
-      '<div class="hit-panel">' 
-      + '<div>' + '<h3>' + hit.name + '</h3>' + '</div>' +
+      '<a href="' + hit.mobile_reserve_url + '" target="_blank">' +
+      '<div class="hit-panel">'  +
       '<div class="hit-photo">'
-      + '<img src="' + hit.image_url + '" height="75" width="75">' +
+      + '<img class="hit-image" src="' + hit.image_url + '" height="75" width="75">' +
       '</div>' 
       + '<div class="hit-meta">'
-      + starMaker(hit.stars_count) + '| American | $30 to $50' +
+      + '<h3>' + hit.name + '</h3>' + starMaker(hit.stars_count, true) + '<p>' + hit.dining_style + ' | ' + hit.neighborhood + ' | ' + hit.price_range + '</p>' + 
       '</div>' +
-      '</div>'
-            
+      '</div>' 
+      + '</a>'      
     );
   });
 
   // add response metrics to page
-  document.getElementById('results-metrics').innerHTML = '<h3>' + '<b>' + results.nbHits + '</b> result' + (results.nbHits > 1 ? 's' : '') + ' in <b>' + results.processingTimeMS + '</b> ms' + '</h3>';
+  document.getElementById('results-metrics').innerHTML = '<p>' + '<b>' + results.nbHits + '</b> result' + (results.nbHits > 1 ? 's' : '') + ' in <b>' + results.processingTimeMS + '</b> ms' + '</p>';
   
   $hits.html(hits);
 }
-
 
 
 function renderFacets($facets, results) {
@@ -117,6 +121,7 @@ function renderFacets($facets, results) {
     var facetName;
 
     var name = facet.name;
+    console.log(facet);
     var facetName;
     if(name === 'food_type'){
       facetName = 'Food Type';
@@ -132,146 +137,273 @@ function renderFacets($facets, results) {
     var facetValues = results.getFacetValues(name);
     var facetsValuesList = $.map(facetValues, function(facetValue) {
       var facetValueClass = facetValue.isRefined ? 'refined'  : '';
-      var valueAndCount = '<a data-attribute="' + name + '" data-value="' + facetValue.name + '" href="#">' + facetValue.name + ' (' + facetValue.count + ')' + '</a>';
+      if(facet.name === 'stars_count'){
+        var valueAndCount = '<a data-attribute="' + name + '" data-value="' + facetValue.name + '" href="#">' +  facetValue.name + starMaker(facetValue.name) + ' (' + facetValue.count + ')' + '</a>';
+      } else{
+        var valueAndCount = '<a data-attribute="' + name + '" data-value="' + facetValue.name + '" href="#">' + facetValue.name + ' (' + facetValue.count + ')' + '</a>';
+      }
+      
       return '<li class="' + facetValueClass + '">' + valueAndCount + '</li>';
     })
-    return header + '<ul>' + facetsValuesList.join('') + '</ul>';
+  
+  return header + '<ul>' + facetsValuesList.join('') + '</ul>';
+    
   });
   
   $facets.html(facets.join(''));
 }
-
+// handle facet clicks
 function handleFacetClick(e) {
+  console.log(e);
   e.preventDefault();
   var target = e.target;
   var attribute = target.dataset.attribute;
   var value = target.dataset.value;
+  console.log(attribute);
+  console.log(value);
   if(!attribute || !value) return;
   helper.toggleRefine(attribute, value).search();
 }
 
 // Make Stars
 
-function starMaker(number){
+function starMaker(number, includeNumber){
   var rating = 'hey';
   console.log('starting switch statement');
   switch(true){
     case (number > 0 && number < .75):
-      return( 
-        '<strong style="color:rgb(255, 200, 90)">' + number + ' </strong>' +
-        '<span class="fa-layers fa-fw">' +
-          '<i class="fa-inverse fas fa-star empty-star"></i>' +
-          '<i class="fas fa-star-half"></i>' +
-        '</span>' +
-        '<i class="fas fa-star empty-star"></i>' +
-        '<i class="fas fa-star empty-star"></i>' +
-        '<i class="fas fa-star empty-star"></i>' +
-        '<i class="fas fa-star empty-star"></i>' 
-   
-      );
+        if(includeNumber){
+          return(
+            '<strong style="color:rgb(255, 200, 90)">' + number + ' </strong>' +
+            '<span class="fa-layers fa-fw">' +
+              '<i class="fa-inverse fas fa-star empty-star"></i>' +
+              '<i class="fas fa-star-half"></i>' +
+            '</span>' +
+            '<i class="fas fa-star empty-star"></i>' +
+            '<i class="fas fa-star empty-star"></i>' +
+            '<i class="fas fa-star empty-star"></i>' +
+            '<i class="fas fa-star empty-star"></i>')
+        } else {
+          return(
+            '<span class="fa-layers fa-fw">' +
+              '<i class="fa-inverse fas fa-star empty-star"></i>' +
+              '<i class="fas fa-star-half"></i>' +
+            '</span>' +
+            '<i class="fas fa-star empty-star"></i>' +
+            '<i class="fas fa-star empty-star"></i>' +
+            '<i class="fas fa-star empty-star"></i>' +
+            '<i class="fas fa-star empty-star"></i>')
+        }
+      ;
       break;
 
     case (number >= .75 && number < 1.25):
-      return( 
+    if(includeNumber){
+      return(
         '<strong style="color:rgb(255, 200, 90)">' + number + ' </strong>' +
         '<i class="fas fa-star"></i>' +
-        '<i class="fas fa-star empty-star"></i>' +
-        '<i class="fas fa-star empty-star"></i>' +
-        '<i class="fas fa-star empty-star"></i>' +
+        '<i class="fas fa-star empty-star"></i>'  +
+        '<i class="fas fa-star empty-star"></i>'  +
+        '<i class="fas fa-star empty-star"></i>'  +
         '<i class="fas fa-star empty-star"></i>' 
       );
+    } else {
+      return(
+        '<i class="fas fa-star"></i>' +
+        '<i class="fas fa-star empty-star"></i>'  +
+        '<i class="fas fa-star empty-star"></i>'  +
+        '<i class="fas fa-star empty-star"></i>'  +
+        '<i class="fas fa-star empty-star"></i>' 
+      );
+    }
       break;
       case (number >= 1.25 && number < 1.75):
-      return (
-        '<strong style="color:rgb(255, 200, 90)">' + number + ' </strong>' +
-        '<i class="fas fa-star"></i>' +
-        '<span class="fa-layers fa-fw">' +
+      if(includeNumber){
+        return(
+          '<strong style="color:rgb(255, 200, 90)">' + number + ' </strong>' +
+          '<i class="fas fa-star"></i>' +
+          '<span class="fa-layers fa-fw">' +
           '<i class="fa-inverse fas fa-star empty-star"></i>' +
           '<i class="fas fa-star-half"></i>' +
-        '</span>' + 
-        '<i class="fas fa-star empty-star"></i>' +
-        '<i class="fas fa-star empty-star"></i>' +
-        '<i class="fas fa-star empty-star"></i>' 
-      );
+          '</span>' +
+          '<i class="fas fa-star empty-star"></i>' +
+          '<i class="fas fa-star empty-star"></i>' +
+          '<i class="fas fa-star empty-star"></i>' 
+
+        );
+      } else {
+        return(
+          '<i class="fas fa-star"></i>' +
+          '<span class="fa-layers fa-fw">' +
+          '<i class="fa-inverse fas fa-star empty-star"></i>' +
+          '<i class="fas fa-star-half"></i>' +
+          '</span>' +
+          '<i class="fas fa-star empty-star"></i>' +
+          '<i class="fas fa-star empty-star"></i>' +
+          '<i class="fas fa-star empty-star"></i>' 
+        );
+      }
       break;
       case (number >= 1.75 && number < 2.25):
-      return (
-        '<strong style="color:rgb(255, 200, 90)">' + number + ' </strong>' +
-        '<i class="fas fa-star"></i>' +
-        '<i class="fas fa-star"></i>' +
-        '<i class="fas fa-star empty-star"></i>' +
-        '<i class="fas fa-star empty-star"></i>' +
-        '<i class="fas fa-star empty-star"></i>' 
-      );
+      if(includeNumber){
+        return(
+          '<strong style="color:rgb(255, 200, 90)">' + number + ' </strong>' +
+          '<i class="fas fa-star"></i>' +
+          '<i class="fas fa-star"></i>' +
+          '<i class="fas fa-star empty-star"></i>'  +
+          '<i class="fas fa-star empty-star"></i>'  +
+          '<i class="fas fa-star empty-star"></i>' 
+        );
+      } else {
+        return(
+          '<i class="fas fa-star"></i>' +
+          '<i class="fas fa-star"></i>' +
+          '<i class="fas fa-star empty-star"></i>'  +
+          '<i class="fas fa-star empty-star"></i>'  +
+          '<i class="fas fa-star empty-star"></i>' 
+        );
+      }
       break;
       case (number >= 2.25 && number < 2.75):
-      return (
-        '<strong style="color:rgb(255, 200, 90)">' + number + ' </strong>' +
-        '<i class="fas fa-star"></i>' +
-        '<i class="fas fa-star"></i>' +
-        '<span class="fa-layers fa-fw">' +
+      if(includeNumber){
+        return(
+          '<strong style="color:rgb(255, 200, 90)">' + number + ' </strong>' +
+          '<i class="fas fa-star"></i>' +
+          '<i class="fas fa-star"></i>' +
+          '<span class="fa-layers fa-fw">' +
           '<i class="fa-inverse fas fa-star empty-star"></i>' +
           '<i class="fas fa-star-half"></i>' +
-        '</span>' + 
-        '<i class="fas fa-star empty-star"></i>' +
-        '<i class="fas fa-star empty-star"></i>' 
-      );
+          '</span>' +
+          '<i class="fas fa-star empty-star"></i>' +
+          '<i class="fas fa-star empty-star"></i>' 
+
+        );
+      } else {
+        return(
+          '<i class="fas fa-star"></i>' +
+          '<i class="fas fa-star"></i>' +
+          '<span class="fa-layers fa-fw">' +
+          '<i class="fa-inverse fas fa-star empty-star"></i>' +
+          '<i class="fas fa-star-half"></i>' +
+          '</span>' +
+          '<i class="fas fa-star empty-star"></i>' +
+          '<i class="fas fa-star empty-star"></i>' 
+        );
+      }
       break;
       case (number >= 2.75 && number < 3.25):
-      return (
-        '<strong style="color:rgb(255, 200, 90)">' + number + ' </strong>' +
-        '<i class="fas fa-star"></i>' +
-        '<i class="fas fa-star"></i>' +
-        '<i class="fas fa-star"></i>' +
-        '<i class="fas fa-star empty-star"></i>' +
-        '<i class="fas fa-star empty-star"></i>' 
-      );
+      if(includeNumber){
+        return(
+          '<strong style="color:rgb(255, 200, 90)">' + number + ' </strong>' +
+          '<i class="fas fa-star"></i>' +
+          '<i class="fas fa-star"></i>' +
+          '<i class="fas fa-star"></i>' +
+          '<i class="fas fa-star empty-star"></i>'  +
+          '<i class="fas fa-star empty-star"></i>' 
+        );
+      } else {
+        return(
+          '<i class="fas fa-star"></i>' +
+          '<i class="fas fa-star"></i>' +
+          '<i class="fas fa-star"></i>' +
+          '<i class="fas fa-star empty-star"></i>'  +
+          '<i class="fas fa-star empty-star"></i>' 
+        );
+      }
       break;
       case (number >= 3.25 && number < 3.75):
-      return (
-        '<strong style="color:rgb(255, 200, 90)">' + number + ' </strong>' +
-        '<i class="fas fa-star"></i>' +
-        '<i class="fas fa-star"></i>' +
-        '<i class="fas fa-star"></i>' +
-        '<span class="fa-layers fa-fw">' +
+      if(includeNumber){
+        return(
+          '<strong style="color:rgb(255, 200, 90)">' + number + ' </strong>' +
+          '<i class="fas fa-star"></i>' +
+          '<i class="fas fa-star"></i>' +
+          '<i class="fas fa-star"></i>' +
+          '<span class="fa-layers fa-fw">' +
           '<i class="fa-inverse fas fa-star empty-star"></i>' +
           '<i class="fas fa-star-half"></i>' +
-        '</span>' + 
-        '<i class="fas fa-star empty-star"></i>' 
-      );
+          '</span>' +
+          '<i class="fas fa-star empty-star"></i>' 
+
+        );
+      } else {
+        return(
+          '<i class="fas fa-star"></i>' +
+          '<i class="fas fa-star"></i>' +
+          '<i class="fas fa-star"></i>' +
+          '<span class="fa-layers fa-fw">' +
+          '<i class="fa-inverse fas fa-star empty-star"></i>' +
+          '<i class="fas fa-star-half"></i>' +
+          '</span>' +
+          '<i class="fas fa-star empty-star"></i>' 
+        );
+      }
       break;
       case (number >= 3.75 && number < 4.25):
-      return (
-        '<strong style="color:rgb(255, 200, 90)">' + number + ' </strong>' +
-        '<i class="fas fa-star"></i>' +
-        '<i class="fas fa-star"></i>' +
-        '<i class="fas fa-star"></i>' +
-        '<i class="fas fa-star"></i>' +
-        '<i class="fas fa-star empty-star"></i>' 
-      );
+      if(includeNumber){
+        return(
+          '<strong style="color:rgb(255, 200, 90)">' + number + ' </strong>' +
+          '<i class="fas fa-star"></i>' +
+          '<i class="fas fa-star"></i>' +
+          '<i class="fas fa-star"></i>' +
+          '<i class="fas fa-star"></i>' +
+          '<i class="fas fa-star empty-star"></i>' 
+        );
+      } else {
+        return(
+          '<i class="fas fa-star"></i>' +
+          '<i class="fas fa-star"></i>' +
+          '<i class="fas fa-star"></i>' +
+          '<i class="fas fa-star"></i>' +
+          '<i class="fas fa-star empty-star"></i>' 
+        );
+      }
       break;
       case (number >= 4.25 && number < 4.75):
-      return (
-        '<strong style="color:rgb(255, 200, 90)">' + number + ' </strong>' +
-        '<i class="fas fa-star"></i>' +
-        '<i class="fas fa-star"></i>' +
-        '<i class="fas fa-star"></i>' +
-        '<i class="fas fa-star"></i>' +
-        '<span class="fa-layers fa-fw">' +
+      if(includeNumber){
+        return(
+          '<strong style="color:rgb(255, 200, 90)">' + number + ' </strong>' +
+          '<i class="fas fa-star"></i>' +
+          '<i class="fas fa-star"></i>' +
+          '<i class="fas fa-star"></i>' +
+          '<i class="fas fa-star"></i>' +
+          '<span class="fa-layers fa-fw">' +
           '<i class="fa-inverse fas fa-star empty-star"></i>' +
           '<i class="fas fa-star-half"></i>' +
-        '</span>' 
-      );
+          '</span>' 
+        );
+      } else {
+        return(
+          '<i class="fas fa-star"></i>' +
+          '<i class="fas fa-star"></i>' +
+          '<i class="fas fa-star"></i>' +
+          '<i class="fas fa-star"></i>' +
+          '<span class="fa-layers fa-fw">' +
+          '<i class="fa-inverse fas fa-star empty-star"></i>' +
+          '<i class="fas fa-star-half"></i>' +
+          '</span>' 
+        );
+      }
       break;
       case (number >= 4.75):
-      return (
-        '<strong style="color:rgb(255, 200, 90)">' + number + ' </strong>' +
-        '<i class="fas fa-star"></i>' +
-        '<i class="fas fa-star"></i>' +
-        '<i class="fas fa-star"></i>' +
-        '<i class="fas fa-star"></i>' +
-        '<i class="fas fa-star"></i>' 
-      );
+      
+        if(includeNumber){
+          return(
+            '<strong style="color:rgb(255, 200, 90)">' + number + ' </strong>' +
+            '<i class="fas fa-star"></i>' +
+            '<i class="fas fa-star"></i>' +
+            '<i class="fas fa-star"></i>' +
+            '<i class="fas fa-star"></i>' +
+            '<i class="fas fa-star"></i>'
+          );
+        } else {
+          return(
+            '<i class="fas fa-star"></i>' +
+            '<i class="fas fa-star"></i>' +
+            '<i class="fas fa-star"></i>' +
+            '<i class="fas fa-star"></i>' +
+            '<i class="fas fa-star"></i>'
+          );
+        }
       break;
   }
   // if(number < 3){
@@ -282,7 +414,20 @@ function starMaker(number){
   return rating;
 }
 
+// toggle the filters on/off for mobile view
+
 function toggleFilters(){
   var filter = document.getElementById("facet-list");
   filter.classList.toggle("hide-facets");
 }
+
+function nicTest(food){
+  helper.search(food);
+}
+
+function showMoreHits(){
+
+  helper.setQueryParameter('hitsPerPage', hitNumber + 20).search();
+  var hideMore = document.getElementById("more-results-div");
+  hideMore.classList.add("menu-toggle");
+};

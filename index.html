@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>Algolia Search Helper Conjunctive facets.</title>
+  
+  
+  
+      <link rel="stylesheet" href="css/style.css">
+      <script defer src="https://use.fontawesome.com/releases/v5.0.1/js/all.js"></script>
+      <link href="https://fonts.googleapis.com/css?family=Lato:300|Questrial" rel="stylesheet">
+      
+  
+</head>
+
+<body>
+  <div class="main-wrapper">
+    <div class="search-wrapper">
+        <div class="logo-wrapper">
+          <img class="site-logo" src="resources/graphics/find_food_logo2.png" width="100px" height="100px">
+        </div>
+        <div class="menu-toggle" onclick="toggleFilters()">
+            <i class="fas fa-sliders-h fa-lg"></i>            
+        </div>
+        <div class="search-icon">
+            <i class="fas fa-search fa-3x"></i>            
+        </div>
+
+        <div class="input-wrapper">
+          <input autocomplete="off" id="search-box" id="q" placeholder="Search for Restaurants By Name, Cuisine, or Location" type="text" spellcheck="false" style="color: #fff"/>
+        </div>
+    
+      </div>
+    <div id="facet-list">
+        <div class="facets-wrapper">
+          <div id="facets"></div>
+        </div>
+      </div>
+    <div class="hits-wrapper">
+      <h3 id="results-metrics"></h3>
+      <div id="hits"></div>
+    </div>
+    <button>Load More</button>
+    <i class="fa fa-star" aria-hidden="true"></i>
+  </div>
+  <!-- <script src="https://use.fontawesome.com/83513c83b1.js"></script> -->
+  <script src='https://cdn.jsdelivr.net/g/algoliasearch@3(algoliasearchLite.min.js),algoliasearch.helper@2'></script>
+  <script src='https://code.jquery.com/jquery-2.2.4.min.js'></script>
+
+    <script  src="js/index.js"></script>
+
+</body>
+</html>

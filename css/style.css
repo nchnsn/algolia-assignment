@@ -237,18 +237,19 @@ input::placeholder {
   #facet-list
   {
    width: 100%;
-   float: left;
+   max-width: 1200px;
    padding: 25px;
    margin: 0;
    list-style: none;
+   background-color:rgb(208, 235, 251);
    
  }
 
   .main-wrapper{
-    overflow:auto;
     background-color:#fff;
     border-radius:0px;
     margin:0; 
+    height:100%;
   }
   .menu-toggle{
     border:1px solid #ccc;
@@ -256,6 +257,9 @@ input::placeholder {
     padding:25px;
     border-radius:10;
     display:block;
+  }
+  .hits-wrapper{
+    width:100%;
   }
 
   .logo-wrapper{

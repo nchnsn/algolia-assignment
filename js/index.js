@@ -103,30 +103,6 @@ navigator.geolocation.watchPosition(geo_success, geo_error, geo_options);
 
 
 
-
-
-//
-// if (navigator.geolocation) {
-//   console.log('yay geolocation');
-  // var userLat, userLng;
-
-  // navigator.geolocation.getCurrentPosition(function(position) {
-  //   (userLat = position.coords.latitude), (userLng = position.coords.longitude);
-  //   let userCoords = `${userLat}, ${userLng}`;
-  //   console.log(userCoords);
-  //   helper.setQueryParameter('aroundLatLng', '55.828972, -4.2242689');
-  //   helper.search();
-  // });
-// } else {
-//   console.log('no geolocation');
-//   helper.setQueryParameter('aroundLatLngViaIP', true);
-//   helper.search();
-// }
-
-// helper.setQueryParameter('aroundLatLngViaIP', true);
-// helper.search();
-
-
 function searchCallback(results) {
   if (results.hits.length === 0) {
     $hits.empty().html("No Restaurants For That Search, Try Again!");

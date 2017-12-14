@@ -1,0 +1,2 @@
+Import Script -
+Using a couple nom packages for importing csv and son files, I converted the data using the app.js script and exported it to the updatedInfo.json file. I used that for my final index data in my projects and just uploaded it through the web dashboard.

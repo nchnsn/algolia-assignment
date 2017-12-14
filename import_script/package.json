@@ -1,0 +1,11 @@
+{
+  "name": "3de707bc656cf757a0cb-c247a82036e93569efb5569fbce9850e72fccf6b",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}

@@ -73,8 +73,58 @@ $inputfield.keyup(function(e) {
 
 $facets.on('click', handleFacetClick);
 
-helper.setQueryParameter('aroundLatLngViaIP', true);
-helper.search();
+// Check for IP address
+
+function geo_success(position) {
+  console.log(position.coords.latitude, position.coords.longitude);
+  var userLat, userLng;
+  userLat = position.coords.latitude;
+  userLng = position.coords.longitude;
+  let userCoords = `${userLat}, ${userLng}`;
+  console.log(userCoords);
+  helper.setQueryParameter('aroundLatLng', userCoords);
+  helper.search();
+  
+}
+
+function geo_error() {
+  console.log('no geolocation');
+  helper.setQueryParameter('aroundLatLngViaIP', true);
+  helper.search();
+}
+
+var geo_options = {
+  // enableHighAccuracy: true, 
+  // maximumAge        : 30000, 
+  // timeout           : 27000
+};
+
+navigator.geolocation.watchPosition(geo_success, geo_error, geo_options);
+
+
+
+
+
+//
+// if (navigator.geolocation) {
+//   console.log('yay geolocation');
+  // var userLat, userLng;
+
+  // navigator.geolocation.getCurrentPosition(function(position) {
+  //   (userLat = position.coords.latitude), (userLng = position.coords.longitude);
+  //   let userCoords = `${userLat}, ${userLng}`;
+  //   console.log(userCoords);
+  //   helper.setQueryParameter('aroundLatLng', '55.828972, -4.2242689');
+  //   helper.search();
+  // });
+// } else {
+//   console.log('no geolocation');
+//   helper.setQueryParameter('aroundLatLngViaIP', true);
+//   helper.search();
+// }
+
+// helper.setQueryParameter('aroundLatLngViaIP', true);
+// helper.search();
 
 
 function searchCallback(results) {

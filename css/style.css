@@ -8,6 +8,7 @@ a:link {
 
 a:visited {
   text-decoration: none;
+  color:#555;
   
 }
 
@@ -213,7 +214,6 @@ input::placeholder {
   overflow:auto;
   margin:25px;
   background-color:#fff;
-  border-radius:10px;
   box-shadow: 5px 5px 25px rgba(86, 85, 85, 0.457);
 }
 

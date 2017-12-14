@@ -1,6 +1,5 @@
 * {
   font-family: 'lato', 'helvetica', sans-serif;
-  /* color:#555; */
 }
 a:link {
   text-decoration: none;
@@ -286,6 +285,9 @@ input::placeholder {
     /* min-width: 600px; */
     
     padding: 1em;
+    min-width: 550px;
+    position: relative;
+    left:-10px;
     border-radius: 5px;
     box-sizing: border-box;
     border:none;
@@ -299,6 +301,17 @@ input::placeholder {
     color:#fff;
     overflow: auto;
     
+  }
+
+  .menu-toggle{
+    border:1px solid #ccc;
+    float:right;
+    padding:25px;
+    border-radius:10;
+    display:block;
+  }
+  .hits-more-results{
+    display:none;
   }
 }
 

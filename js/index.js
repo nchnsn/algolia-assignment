@@ -1,99 +1,45 @@
 
 
-
-// Algolia client. Mandatory to instantiate the Helper.
-
-
 var algolia = algoliasearch('P66KPV0B4D', 'd21f68656aa0b122171c8138b26379a5');
-// defining the intial number of results and adding a method to 'show more'
 var hitNumber = 5;
 
-// Algolia Helper
+
 var helper = algoliasearchHelper(algolia, 'restaurant_data', {
-  // Facets need to be explicitly defined here
   facets: ['food_type', 'stars_count', 'payment_options'],
-  
-  
-  // Misc. configuration for the demo purpose 
   hitsPerPage: hitNumber,
   maxValuesPerFacet: 4
 });
 
-// Bind the result event to a function that will update the results
 helper.on("result", searchCallback);
 
-// The different parts of the UI that we want to use in this example
 var $inputfield = $("#search-box");
 var $hits = $('#hits');
 var $facets = $('#facets');
 
-// When there is a new character input:
-// - update the query
-// - trigger the search
 $inputfield.keyup(function(e) {
   helper.setQuery($inputfield.val()).search();
 });
 
 $facets.on('click', handleFacetClick);
 
-// Trigger a first search, so that we have a page with results
-// from the start.
 helper.setQueryParameter('aroundLatLngViaIP', true);
 helper.search();
 
-// Result event callback
+
 function searchCallback(results) {
   if (results.hits.length === 0) {
-    // If there is no result we display a friendly message
-    // instead of an empty page.
-    $hits.empty().html("No results :(");
+    $hits.empty().html("No Restaurants For That Search, Try Again!");
     return;
   }
 
-	// Hits/results rendering
   renderHits($hits, results);
   renderFacets($facets, results);
 }
 
 function renderHits($hits, results) {
-  // Scan all hits and display them
   var hits = results.hits.map(function renderHit(hit, index) {
-    console.log(hit);
-    // We rely on the highlighted attributes to know which attribute to display
-    // This way our end-user will know where the results come from
-    // This is configured in our index settings
-    
     var highlighted = hit._highlightResult;
     var attributes2 = results.hits.map(function(element, index){return JSON.stringify(element.name)});
-    console.log(attributes2);
-    // var attributes = $.map(highlighted, function renderAttributes(attribute, name) {
-      
-    //   console.log(attribute);
-    //   console.log(name);
-    //   console.log(results);
-      
-    //   // if(name === 'name'){
-    //   //   return (
-    //   //     '<div class="attribute">'  + '<h3>' + attribute.value + '</h3>' +
-    //   //     '</div>');
-    //   // } else if(name === 'stars_count') {
-    //   //   return (
-    //   //     '<div class="attribute">' +
-    //   //     '<strong>' + attribute.value + '</strong>' +
-    //   //     '</div>');
-    //   // } else if(name === 'image_url') {
-    //   //   return (
-    //   //     '<div class="attribute">' +
-    //   //     '<img src="' + attribute.value + '" height="75" width="75">' +
-    //   //     '</div>');
-    //   // } else {
-    //   //   return (
-    //   //     '<div class="attribute">' + attribute.value + '</div>');
-    //   // }
-    //     return (
-    //       '<div class="attribute">' + attribute.value + '</div>');
-
-    // }).join('');
     return (
       '<a href="' + hit.mobile_reserve_url + '" target="_blank">' +
       '<div class="hit-panel">'  +
@@ -108,7 +54,6 @@ function renderHits($hits, results) {
     );
   });
 
-  // add response metrics to page
   document.getElementById('results-metrics').innerHTML = '<p>' + '<b>' + results.nbHits + '</b> result' + (results.nbHits > 1 ? 's' : '') + ' in <b>' + results.processingTimeMS + '</b> ms' + '</p>';
   
   $hits.html(hits);
@@ -116,12 +61,9 @@ function renderHits($hits, results) {
 
 
 function renderFacets($facets, results) {
-  console.log(results.facets);
   var facets = results.facets.map(function(facet) {
     var facetName;
-
     var name = facet.name;
-    console.log(facet);
     var facetName;
     if(name === 'food_type'){
       facetName = 'Food Type';
@@ -152,15 +94,12 @@ function renderFacets($facets, results) {
   
   $facets.html(facets.join(''));
 }
-// handle facet clicks
 function handleFacetClick(e) {
-  console.log(e);
+  
   e.preventDefault();
   var target = e.target;
   var attribute = target.dataset.attribute;
   var value = target.dataset.value;
-  console.log(attribute);
-  console.log(value);
   if(!attribute || !value) return;
   helper.toggleRefine(attribute, value).search();
 }
@@ -168,8 +107,6 @@ function handleFacetClick(e) {
 // Make Stars
 
 function starMaker(number, includeNumber){
-  var rating = 'hey';
-  console.log('starting switch statement');
   switch(true){
     case (number > 0 && number < .75):
         if(includeNumber){
@@ -406,12 +343,6 @@ function starMaker(number, includeNumber){
         }
       break;
   }
-  // if(number < 3){
-  //   return '<i class="fa fa-star" aria-hidden="true" color="yellow"</i>';
-  // } else if(number > 3) {
-  //   return '<i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i>';
-  // }
-  return rating;
 }
 
 // toggle the filters on/off for mobile view
@@ -421,12 +352,7 @@ function toggleFilters(){
   filter.classList.toggle("hide-facets");
 }
 
-function nicTest(food){
-  helper.search(food);
-}
-
 function showMoreHits(){
-
   helper.setQueryParameter('hitsPerPage', hitNumber + 20).search();
   var hideMore = document.getElementById("more-results-div");
   hideMore.classList.add("menu-toggle");

@@ -14,10 +14,10 @@
           <img class="site-logo" src="resources/graphics/find_food_logo2.png" width="100px" height="100px">
         </div>
         <div class="menu-toggle" onclick="toggleFilters()">
-            <i class="fas fa-sliders-h fa-lg"></i>            
+            <i class="fas fa-sliders-h fa-3x"></i>            
         </div>
-        <div class="search-icon">
-            <i class="fas fa-search fa-3x"></i>            
+        <div class="search-icon" id="search-icon-loading">
+            <i class="fas fa-spinner fa-pulse fa-3x"></i>         
         </div>
         <div class="input-wrapper">
           <input autocomplete="off" id="search-box" id="q" placeholder="Search for Restaurants By Name, Cuisine, or Location" type="text" spellcheck="false" style="color: #fff"/>
@@ -26,13 +26,15 @@
     <div id="facet-list">
         <div class="facets-wrapper">
           <div id="facets"></div>
+          <!-- <h3 onclick="fourStarsFacet()">Four Stars</h3>
+          <h3 onclick="discoverFacet()">Discover</h3> -->
         </div>
       </div>
     <div class="hits-wrapper">
       <h3 id="results-metrics"></h3>
       <div id="hits">
       </div>
-      <div class="hits-more-results" id="more-results-div">
+      <div class="hits-more-results hide-more" id="more-results-div">
         <h3 class="hits-results-button" onclick="showMoreHits()">More Results</h3>
       </div>
     </div>

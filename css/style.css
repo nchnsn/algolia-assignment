@@ -67,6 +67,10 @@ body{
   border-radius:10px;
 }
 
+.fa-spinner{
+  color:#fff;
+}
+
 .fa-search{
   color:#fff;
 }
@@ -97,13 +101,12 @@ input::placeholder {
 }
 .search-wrapper{
   padding:25px;
-  border:1px solid slategray;
   background-color:rgb(15, 92, 200);
   height:150px;
 }
 
 .fa-sliders-h{
-  color:#ccc;
+  color:#fff;
 }
 
 #facet-list
@@ -151,6 +154,7 @@ input::placeholder {
   float:right;
   width: 80%;
   padding:25px;
+  min-height:600px;
   
 }
 
@@ -198,6 +202,19 @@ input::placeholder {
   height:50px;
   
 }
+
+.more-results-div{
+  
+}
+
+.hide-more{
+  display:none;
+}
+
+.display-toggle{
+  /* display:inline; */
+}
+
 .hits-results-button{
   text-align: center;
   padding:15px;
@@ -251,7 +268,7 @@ input::placeholder {
     height:100%;
   }
   .menu-toggle{
-    border:1px solid #ccc;
+    border:3px solid #fff;
     float:right;
     padding:25px;
     border-radius:10;
@@ -279,11 +296,12 @@ input::placeholder {
     width:50%;
     float:left;
   }
-
+  .search-wrapper{
+    box-shadow: 5px 5px 25px rgba(86, 85, 85, 0.457);
+    border:none;
+  }
   #search-box {
     height:100%;
-    /* min-width: 600px; */
-    
     padding: 1em;
     min-width: 550px;
     position: relative;
@@ -304,7 +322,8 @@ input::placeholder {
   }
 
   .menu-toggle{
-    border:1px solid #ccc;
+    border:3px solid #fff;
+    background-color:rgb(15, 92, 200);
     float:right;
     padding:25px;
     border-radius:10;

@@ -12,7 +12,7 @@ var helper = algoliasearchHelper(algolia, 'restaurant_data', {
 });
 
 // facet methods
-// star ratings
+  // star ratings
 var fourStarsToggle = false;
 function fourStarsFacet(){
   if(fourStarsToggle){
@@ -31,7 +31,7 @@ function fourStarsFacet(){
   }
   fourStarsToggle = !fourStarsToggle;
 }
-
+// discover card toggle
 var discoverToggle = false;
 function discoverFacet(){
   alert('discovvvrrr');
@@ -46,13 +46,10 @@ function discoverFacet(){
   discoverToggle = !discoverToggle;
 }
 
-// helper.addDisjunctiveFacetRefinement('stars_count', 4.3);
+// set callback for search
 
 helper.on("result", searchCallback);
-// helper.on("result", function(results, state){
-//   console.log(results);
-  
-// });
+
 
 helper.on('searchQueueEmpty', function() {
   var searchIcon = document.getElementById("search-icon-loading");
@@ -60,9 +57,10 @@ helper.on('searchQueueEmpty', function() {
   var hideMore = document.getElementById("more-results-div");
   hideMore.classList.remove("hide-more");
   console.log('No more search pending');
-  // This is received before the result event if we're not expecting new results
+  
 });
 
+// search as soon as text input
 var $inputfield = $("#search-box");
 var $hits = $('#hits');
 var $facets = $('#facets');
@@ -177,6 +175,8 @@ function renderFacets($facets, results) {
   
   $facets.html(facets.join(''));
 }
+
+// specific function to handle facet clicks
 function handleFacetClick(e) {
   
   e.preventDefault();
@@ -434,6 +434,8 @@ function toggleFilters(){
   var filter = document.getElementById("facet-list");
   filter.classList.toggle("hide-facets");
 }
+
+// show more button 
 
 function showMoreHits(){
   helper.setQueryParameter('hitsPerPage', hitNumber + 20).search();

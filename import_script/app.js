@@ -44,6 +44,7 @@ require('fs').readFile('restaurants_list.json', 'utf8', function (err, data) {
     console.log(obj[0]['objectID']);
     obj.map(function(element, index){
         console.log('mapping new data');
+        // creating a refference to find that object ID in the csv data
         var csvData = csvObj[element['objectID']];
         element.food_type = csvData.food_type;
         element.stars_count = csvData.stars_count;
